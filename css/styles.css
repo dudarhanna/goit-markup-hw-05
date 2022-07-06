@@ -3,7 +3,7 @@
   --main-font: "Roboto";
   --secondary-font: "Raleway";
 
-  /* Кольори  */
+  /* Кольори  змінні */
   --main-txt-cl: #757575;
   --accent-cl: #2196f3;
   --black-cl: #212121;
@@ -16,8 +16,10 @@
   --header-cl: #ececec;
   --icon-cl: #afb1b8;
   --footer-bcg-cl: rgba(255, 255, 255, 0.1);
-  /* Змінні */
+  --color-overlay: rgba(33, 150, 243, 0.9);
+  /* Інши змінні */
   --indent: 30px;
+  --anim: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
@@ -56,6 +58,14 @@ img {
   flex-basis: calc(100% / 3 - var(--indent));
   margin-left: var(--indent);
   margin-top: var(--indent);
+}
+.overlay-card {
+  position: relative;
+  overflow: hidden;
+}
+/* common style */
+.no-scroll {
+  overflow: hidden;
 }
 
 /*  Кінець Сітка Flex */
@@ -108,6 +118,7 @@ img {
   color: var(--white-cl);
   background-color: var(--accent-cl);
   cursor: pointer;
+  transition: background-color var(--anim), color var(--anim);
 }
 /* Ховер, фокус кнопки */
 .btn-main:hover,
@@ -152,13 +163,34 @@ img {
   line-height: 1.14;
   letter-spacing: 0.02em;
   color: var(--black-cl);
+  transition: color var(--anim);
 }
 .header-list-item:not(:last-child) {
   margin-right: 50px;
 }
+/* Риска на меню */
+.header-list-item {
+  position: relative;
+}
 .current-link {
+  position: relative;
+  display: flex;
+  align-items: center;
   color: var(--accent-cl);
 }
+.current-link::before {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 0;
+  display: inline-block;
+  width: 100%;
+  height: 4px;
+  background-color: var(--accent-cl);
+  border-radius: 2px;
+  transform: translateY(1px);
+}
+
 /* Ховер, Фокус для меню */
 .header-link:hover,
 .header-link:focus {
@@ -177,6 +209,7 @@ img {
   line-height: 1.14;
   letter-spacing: 0.02em;
   color: var(--main-txt-cl);
+  transition: color var(--anim);
 }
 /* Ховер, Фокус для тел і пошти */
 .header-contact:hover,
@@ -347,6 +380,7 @@ img {
   height: 44px;
   color: var(--icon-cl);
   border-radius: 50%;
+  transition: color var(--anim), background-color var(--anim);
 }
 .social-media-link:hover,
 .social-media-link:focus {
@@ -377,6 +411,7 @@ img {
   align-items: center;
   border: 1px solid var(--icon-cl);
   border-radius: 4px;
+  transition: color var(--anim), border-color var(--anim);
 }
 .logo-list:hover,
 .logo-list:focus {
@@ -395,6 +430,7 @@ img {
   line-height: 1.71;
   letter-spacing: 0.03em;
   font-style: normal;
+  transition: color var(--anim);
 }
 .footer-box {
   display: flex;
@@ -430,6 +466,7 @@ img {
   color: var(--white-cl);
   background-color: var(--footer-bcg-cl);
   border-radius: 50%;
+  transition: background-color var(--anim);
 }
 .footer-item-link:hover,
 .footer-item-link:focus {
@@ -468,6 +505,29 @@ img {
   line-height: 1.88;
   color: var(--main-txt-cl);
 }
+/* Overlay на сторінці portfolio */
+.portfolio-overlay {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-overlay);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 63px 24px;
+  transform: translateY(100%);
+  transition: transform var(--anim);
+  font-size: 18px;
+  letter-spacing: 0.03em;
+  line-height: 1.56;
+  color: var(--white-cl);
+}
+.overlay-card:hover .portfolio-overlay {
+  transform: translateY(0);
+}
+
 /*  Кнопки на сторінці портфоліо */
 .btn-portfolio {
   padding: 6px 22px;
@@ -482,6 +542,8 @@ img {
   color: var(--black-cl);
   background-color: var(--background-btn);
   cursor: pointer;
+  transition: background-color var(--anim), color var(--anim),
+    box-shadow var(--anim);
 }
 .btn-portfolio:hover,
 .btn-portfolio:focus {
@@ -502,6 +564,7 @@ img {
 }
 .portfolio-block {
   display: block;
+  transition: box-shadow var(--anim);
 }
 .portfolio-block:hover,
 .portfolio-block:focus {
@@ -512,4 +575,52 @@ img {
   padding: 20px 24px;
   border: 1px solid var(--portfolio-cl);
   border-top: none;
+}
+/* Modal-window */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  opacity: 1;
+  visibility: visible;
+  pointer-events: initial;
+  transition: opacity var(--anim), visibility var(--anim);
+}
+.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 528px;
+  min-height: 581px;
+  background-color: var(--white-cl);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.modal-close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--white-cl);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  margin: 8px;
+  cursor: pointer;
 }
